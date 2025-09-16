@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: de_mysql
+    restart: always
+    env_file:
+      - .env # load các biến từ file .env.
+    ports:
+      - "3306:3306" # map cổng 3306 của container ra ngoài host.
+    volumes:
+      - de_mysql_data:/var/lib/mysql  # volume lưu data tránh mất khi restart container.
+    networks:
+      - de_network # kết nối vào mạng de_network để các service khác có thể truy cập.
+
+volumes:
+  de_mysql_data: 
+    external: true 
+
+networks:
+  de_network:
+    driver: bridge # loại mạng bridge (mặc định).
+    name: de_network # tên mạng để các service khác có thể kết nối.
